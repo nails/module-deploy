@@ -148,6 +148,11 @@ abstract class Alert extends Base
 
     // --------------------------------------------------------------------------
 
+    /**
+     * @param Interfaces\Alert[] $aAlerts
+     *
+     * @return string[]
+     */
     public static function extractEmails(array $aAlerts): array
     {
         $aEmails = [];

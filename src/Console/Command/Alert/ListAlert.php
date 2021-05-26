@@ -62,6 +62,8 @@ abstract class ListAlert extends Base
 
         $aAlerts = Alert::discoverAlerts();
         $aAlerts = static::filterByChildClass($aAlerts);
+
+        /** @var string[][] $aOutput */
         $aOutput = [];
 
         foreach (Environment::available() as $sEnvironment) {
