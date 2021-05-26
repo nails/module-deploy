@@ -12,7 +12,7 @@ namespace Nails\Deploy\Console\Command;
 use Nails\Common\Exception\FactoryException;
 use Nails\Components;
 use Nails\Console\Command\Base;
-use Nails\Console\Exception\ConsoleException;
+use Nails\Deploy\Exception\WindowException;
 use Nails\Deploy\Interfaces;
 use Nails\Environment;
 use Nails\Factory;
@@ -46,6 +46,7 @@ class Window extends Base
      *
      * @return int
      * @throws FactoryException
+     * @throws WindowException
      */
     protected function execute(InputInterface $oInput, OutputInterface $oOutput)
     {
@@ -86,7 +87,7 @@ class Window extends Base
          * the current time is outside any window, in this case we SHOULD block the deployment
          */
         if (empty($aWindows)) {
-            throw new ConsoleException('Deployment rejected; outside of deploy window');
+            throw new WindowException('Deployment rejected; outside of deploy window');
         }
 
         $oOutput->writeln('Deployment accepted; within deploy window');
