@@ -15,6 +15,8 @@ $config['email_types'] = [
     (object) [
         'slug'            => 'deploy_alert_pre',
         'name'            => 'Deployment Alert: Pre',
+        'is_hidden'       => false,
+        'is_editable"'    => true,
         'can_unsubscribe' => false,
         'description'     => 'Sent when the deploy:alert:pre command is executed',
         'template_header' => '',
@@ -26,6 +28,8 @@ $config['email_types'] = [
     (object) [
         'slug'            => 'deploy_alert_post',
         'name'            => 'Deployment Alert: Post',
+        'is_hidden'       => false,
+        'is_editable"'    => true,
         'can_unsubscribe' => false,
         'description'     => 'Sent when the deploy:alert:post command is executed',
         'template_header' => '',

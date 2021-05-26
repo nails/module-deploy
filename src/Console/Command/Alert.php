@@ -103,6 +103,7 @@ abstract class Alert extends Base
             }
         }
 
+        $oOutput->writeln('');
         return static::EXIT_CODE_SUCCESS;
     }
 
