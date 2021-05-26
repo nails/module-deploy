@@ -10,10 +10,10 @@
 namespace Nails\Deploy\Console\Command;
 
 use Nails\Common\Exception\FactoryException;
-use Nails\Components;
 use Nails\Console\Command\Base;
 use Nails\Deploy\Constants;
 use Nails\Deploy\Interfaces;
+use Nails\Deploy\Traits\Console\Command\Utilities;
 use Nails\Environment;
 use Nails\Factory;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +26,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class Alert extends Base
 {
+    use Utilities;
+
+    // --------------------------------------------------------------------------
+
     const COMMAND     = '';
     const TITLE       = '';
     const DESCRIPTION = '';
@@ -60,11 +64,12 @@ abstract class Alert extends Base
 
         $this->banner(static::TITLE);
 
-        $aAlerts = static::discoverAlerts();
-        $aAlerts = static::filterByEnvironment($aAlerts, Environment::get());
-        $aAlerts = static::filterByChildClass($aAlerts);
+        $aAlerts = $this->discoverAlerts();
+        /** @var Interfaces\Alert[] $aAlerts */
+        $aAlerts = $this->filterByEnvironment($aAlerts, Environment::get());
+        $aAlerts = $this->filterByChildClass($aAlerts);
 
-        $aEmails = static::extractEmails($aAlerts);
+        $aEmails = $this->extractEmails($aAlerts);
 
         if (empty($aEmails)) {
             $oOutput->writeln('No alerts to be sent');
@@ -105,68 +110,6 @@ abstract class Alert extends Base
 
         $oOutput->writeln('');
         return static::EXIT_CODE_SUCCESS;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Discover Deployment Alerts
-     *
-     * @return Interfaces\Alert[]
-     */
-    public static function discoverAlerts(): array
-    {
-        $oCollection = Components::getApp()
-            ->findClasses('Deploy\\Alert')
-            ->whichImplement(Interfaces\Alert::class)
-            ->whichCanBeInstantiated();
-
-        $aOut = [];
-        foreach ($oCollection as $sClass) {
-            $aOut[] = new $sClass();
-        }
-
-        return $aOut;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Filters alerts which do not apply to the given environment
-     *
-     * @param Interfaces\Alert[] $aAlerts      Available alerts
-     * @param string             $sEnvironment The Environment to check
-     *
-     * @return Interfaces\Alert[]
-     */
-    public static function filterByEnvironment(array $aAlerts, string $sEnvironment): array
-    {
-        return array_filter($aAlerts, function (Interfaces\Alert $oAlert) use ($sEnvironment) {
-            $aEnvironments = $oAlert->getEnvironments();
-            return empty($aEnvironments) || in_array($sEnvironment, $aEnvironments);
-        });
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * @param Interfaces\Alert[] $aAlerts
-     *
-     * @return string[]
-     */
-    public static function extractEmails(array $aAlerts): array
-    {
-        $aEmails = [];
-        foreach ($aAlerts as $oAlert) {
-            foreach ($oAlert->getEmails() as $sEmail) {
-                $aEmails[] = $sEmail;
-            }
-        }
-
-        $aEmails = array_unique($aEmails);
-        $aEmails = array_filter($aEmails);
-
-        return $aEmails;
     }
 
     // --------------------------------------------------------------------------

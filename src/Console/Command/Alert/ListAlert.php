@@ -10,8 +10,8 @@
 namespace Nails\Deploy\Console\Command\Alert;
 
 use Nails\Console\Command\Base;
-use Nails\Deploy\Console\Command\Alert;
 use Nails\Deploy\Interfaces;
+use Nails\Deploy\Traits\Console\Command\Utilities;
 use Nails\Environment;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,6 +23,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class ListAlert extends Base
 {
+    use Utilities;
+
+    // --------------------------------------------------------------------------
+
     const COMMAND     = '';
     const TITLE       = '';
     const DESCRIPTION = '';
@@ -55,16 +59,17 @@ abstract class ListAlert extends Base
 
         $this->banner(static::TITLE);
 
-        $aAlerts = Alert::discoverAlerts();
-        $aAlerts = static::filterByChildClass($aAlerts);
+        $aAlerts = $this->discoverAlerts();
+        $aAlerts = $this->filterByChildClass($aAlerts);
 
         /** @var string[][] $aOutput */
         $aOutput = [];
 
         foreach (Environment::available() as $sEnvironment) {
 
-            $aFilteredAlerts = Alert::filterByEnvironment($aAlerts, $sEnvironment);
-            $aEmails         = Alert::extractEmails($aFilteredAlerts);
+            /** @var Interfaces\Alert[] $aFilteredAlerts */
+            $aFilteredAlerts = $this->filterByEnvironment($aAlerts, $sEnvironment);
+            $aEmails         = $this->extractEmails($aFilteredAlerts);
 
             if (empty($aEmails)) {
                 continue;

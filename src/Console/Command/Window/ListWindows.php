@@ -11,8 +11,9 @@ namespace Nails\Deploy\Console\Command\Window;
 
 use Nails\Common\Helper\Strings;
 use Nails\Console\Command\Base;
-use Nails\Deploy\Console\Command\Window;
 use Nails\Deploy\Exception\WindowException\InvalidTimeException;
+use Nails\Deploy\Interfaces;
+use Nails\Deploy\Traits\Console\Command\Utilities;
 use Nails\Environment;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,6 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ListWindows extends Base
 {
+    use Utilities;
+
+    // --------------------------------------------------------------------------
+
     /**
      * Configure the deploy:window:list command
      */
@@ -51,7 +56,7 @@ class ListWindows extends Base
 
         $this->banner('Deploy Window: List');
 
-        $aWindows = Window::discoverWindows();
+        $aWindows = $this->discoverWindows();
         if (empty($aWindows)) {
             $oOutput->writeln('No deployment windows configured.');
             $oOutput->writeln('');
@@ -60,7 +65,8 @@ class ListWindows extends Base
 
         foreach (Environment::available() as $sEnvironment) {
 
-            $aFilteredWindows = Window::filterByEnvironment($aWindows, $sEnvironment);
+            /** @var Interfaces\Window[] $aFilteredWindows */
+            $aFilteredWindows = $this->filterByEnvironment($aWindows, $sEnvironment);
 
             if (empty($aFilteredWindows)) {
                 continue;
@@ -73,10 +79,10 @@ class ListWindows extends Base
                 $aDays = $oWindow->getDays();
 
                 $sOpen = $oWindow->getOpen() ?? '00:00:00';
-                Window::validateTime($sOpen);
+                $this->validateTime($sOpen);
 
                 $sClose = $oWindow->getClose() ?? '23:59:59';
-                Window::validateTime($sClose);
+                $this->validateTime($sClose);
 
                 $this->keyValueList([
                     'Class'  => get_class($oWindow),
