@@ -141,7 +141,7 @@ abstract class Alert extends Base
     /**
      * Filters alerts which do not apply to the given environment
      *
-     * @param Interfaces\Alert[] $aAlerts      Available windows
+     * @param Interfaces\Alert[] $aAlerts      Available alerts
      * @param string             $sEnvironment The Environment to check
      *
      * @return Interfaces\Alert[]
@@ -156,5 +156,10 @@ abstract class Alert extends Base
 
     // --------------------------------------------------------------------------
 
+    /**
+     * @param Interfaces\Alert[] $aAlerts Available alerts
+     *
+     * @return Interfaces\Alert[]
+     */
     abstract protected function filterByChildClass(array $aAlerts): array;
 }
