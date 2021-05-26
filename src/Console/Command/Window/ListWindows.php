@@ -70,6 +70,12 @@ class ListWindows extends Base
 
                 $aDays = $oWindow->getDays();
 
+                $sOpen = $oWindow->getOpen() ?? '00:00:00';
+                Window::validateTime($sOpen);
+
+                $sClose = $oWindow->getClose() ?? '23:59:59';
+                Window::validateTime($sClose);
+
                 $this->keyValueList([
                     'Class'  => get_class($oWindow),
                     'Window' => sprintf(
@@ -77,8 +83,8 @@ class ListWindows extends Base
                         !empty($aDays)
                             ? Strings::replaceLastOccurrence(', ', ' and ', implode(', ', $aDays))
                             : 'Every day',
-                        $oWindow->getOpen() ?? '00:00:00',
-                        $oWindow->getClose() ?? '23:59:59'
+                        $sOpen,
+                        $sClose
                     ),
                 ], false);
             }

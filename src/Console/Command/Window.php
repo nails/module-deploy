@@ -13,6 +13,7 @@ use Nails\Common\Exception\FactoryException;
 use Nails\Components;
 use Nails\Console\Command\Base;
 use Nails\Deploy\Exception\WindowException;
+use Nails\Deploy\Exception\WindowException\InvalidTimeException;
 use Nails\Deploy\Interfaces;
 use Nails\Environment;
 use Nails\Factory;
@@ -57,7 +58,7 @@ class Window extends Base
         $aWindows = static::discoverWindows();
 
         /**
-         * If there are NO windows for the app then that means there are no windows configred at
+         * If there are NO windows for the app then that means there are no windows configured at
          * all, so rather than block all deployments, let all deployments through as non-configuration
          * shouldn't block
          */
@@ -144,6 +145,7 @@ class Window extends Base
      * @param \DateTime           $oCompareDate The date to compare
      *
      * @return Interfaces\Window[]
+     * @throws InvalidTimeException
      */
     public static function filterByDate(array $aWindows, \DateTime $oCompareDate): array
     {
@@ -158,6 +160,7 @@ class Window extends Base
 
                 $oOpen = clone $oCompareDate;
                 $sTime = $oWindow->getOpen() ?? '00:00:00';
+                static::validateTime($sTime);
                 $oOpen->setTime(...array_map('intval', explode(':', $sTime)));
 
                 $bOpenIsOk = $oOpen <= $oCompareDate;
@@ -166,6 +169,7 @@ class Window extends Base
 
                     $oClose = clone $oCompareDate;
                     $sTime  = $oWindow->getClose() ?? '23:59:59';
+                    static::validateTime($sTime);
                     $oClose->setTime(...array_map('intval', explode(':', $sTime)));
 
                     $bCloseIsOk = $oClose > $oCompareDate;
@@ -174,5 +178,24 @@ class Window extends Base
 
             return $bDayIsOk && $bOpenIsOk && $bCloseIsOk;
         });
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Validates that a time is a valid timestamp
+     *
+     * @param string $sTime The time to validate
+     *
+     * @throws InvalidTimeException
+     */
+    public static function validateTime(string $sTime): void
+    {
+        if (!preg_match('/[0-2]\d:[0-5]\d:[0-5]\d/', $sTime)) {
+            throw new InvalidTimeException(sprintf(
+                '"%s" must be in the format [0-2]\d:[0-5]\d:[0-5]\d',
+                $sTime
+            ));
+        }
     }
 }
