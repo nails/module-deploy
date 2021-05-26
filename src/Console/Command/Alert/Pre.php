@@ -22,6 +22,7 @@ class Pre extends Alert
     const COMMAND     = 'deploy:alert:pre';
     const TITLE       = 'Deploy Alert: Pre';
     const DESCRIPTION = 'Sends an alert to configured users that a deployment is starting';
+    const EMAIL       = 'EmailAlertPre';
 
     // --------------------------------------------------------------------------
 

@@ -22,6 +22,7 @@ class Post extends Alert
     const COMMAND     = 'deploy:alert:post';
     const TITLE       = 'Deploy Alert: Post';
     const DESCRIPTION = 'Sends an alert to configured users that a deployment has finished';
+    const EMAIL       = 'EmailAlertPost';
 
     // --------------------------------------------------------------------------
 
