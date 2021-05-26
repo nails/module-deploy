@@ -47,7 +47,14 @@ class ListWindows extends Base
 
         $this->banner('Deploy Window: List');
 
-        foreach (Window::discoverWindows() as $oWindow) {
+        $aWindows = Window::discoverWindows();
+        if (empty($aWindows)) {
+            $oOutput->writeln('No deployment windows configured.');
+            $oOutput->writeln('');
+            return static::EXIT_CODE_SUCCESS;
+        }
+
+        foreach ($aWindows as $oWindow) {
 
             $aEnvironments = $oWindow->getEnvironments();
 
