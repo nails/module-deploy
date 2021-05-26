@@ -1,14 +1,14 @@
 {
     "name": "nails/module-deploy",
     "keywords": [],
-    "homepage": "http://nailsapp.co.uk/modules/other/deploy",
+    "homepage": "https://nailsapp.co.uk/modules/other/deploy",
     "description": "This module provides useful deployment utilities.",
     "license": "MIT",
     "authors": [
         {
             "name": "Pablo de la Pena",
             "email": "p@nailsapp.co.uk",
-            "homepage": "http://nailsapp.co.uk",
+            "homepage": "https://nailsapp.co.uk",
             "role": "Developer"
         }
     ],
@@ -17,7 +17,12 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {},
+    "require": {
+        "nails/common": "dev-develop",
+        "nails/module-auth": "dev-develop",
+        "nails/module-console": "dev-develop",
+        "nails/module-email": "dev-develop"
+    },
     "require-dev": {
         "phpunit/phpunit": "9.*",
         "phpstan/phpstan": "0.*"
