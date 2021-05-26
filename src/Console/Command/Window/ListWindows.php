@@ -3,7 +3,7 @@
 /**
  * The deploy:window:list console command
  *
- * @package  App
+ * @package  Nails\Deploy\Console\Command
  * @category Console
  */
 
