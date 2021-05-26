@@ -89,7 +89,7 @@ class Window extends Base
     public static function discoverWindows(): array
     {
         $oCollection = Components::getApp()
-            ->findClasses()
+            ->findClasses('Deploy\\Window')
             ->whichImplement(Interfaces\Window::class)
             ->whichCanBeInstantiated();
 
