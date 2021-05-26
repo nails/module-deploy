@@ -10,20 +10,20 @@ namespace Nails\Deploy\Interfaces;
 interface Window
 {
     /**
-     * Returns the environments for which this window applies, null means applies to all environments
+     * Returns the environments for which this window applies, empty means applies to all environments
      *
-     * @return string[]|null
+     * @return string[]
      */
-    public function getEnvironments(): ?array;
+    public function getEnvironments(): array;
 
     // --------------------------------------------------------------------------
 
     /**
-     * Returns the day of the week this window applies to, null means applies every day
+     * Returns the day of the week this window applies to, empty means applies every day
      *
-     * @return string|null
+     * @return string[]
      */
-    public function getDay(): ?string;
+    public function getDays(): array;
 
     // --------------------------------------------------------------------------
 

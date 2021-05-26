@@ -55,6 +55,11 @@ class Window extends Base
 
         $aWindows = static::discoverWindows();
 
+        /**
+         * If there are NO windows for the app then that means there are no windows configred at
+         * all, so rather than block all deployments, let all deployments through as non-configuration
+         * shouldn't block
+         */
         if (empty($aWindows)) {
             $oOutput->writeln('Deployment accepted; no deploy windows defined for app');
             $oOutput->writeln('');
@@ -63,6 +68,9 @@ class Window extends Base
 
         $aWindows = static::filterByEnvironment($aWindows, Environment::get());
 
+        /**
+         * If there are no windows defined for the environment, then assume all deployments are acceptable
+         */
         if (empty($aWindows)) {
             $oOutput->writeln('Deployment accepted; no deploy windows defined for ' . Environment::get());
             $oOutput->writeln('');
@@ -73,6 +81,10 @@ class Window extends Base
         $oNow     = Factory::factory('DateTime');
         $aWindows = static::filterByDate($aWindows, $oNow);
 
+        /**
+         * In this case, as there ARE windows defined for the environment then a lack of windows means that
+         * the current time is outside any window, in this case we SHOULD block the deployment
+         */
         if (empty($aWindows)) {
             throw new ConsoleException('Deployment rejected; outside of deploy window');
         }
@@ -118,7 +130,7 @@ class Window extends Base
     {
         return array_filter($aWindows, function (Interfaces\Window $oWindow) use ($sEnvironment) {
             $aEnvironments = $oWindow->getEnvironments();
-            return $aEnvironments === null || in_array($sEnvironment, $aEnvironments);
+            return empty($aEnvironments) || in_array($sEnvironment, $aEnvironments);
         });
     }
 
@@ -136,8 +148,8 @@ class Window extends Base
     {
         return array_filter($aWindows, function (Interfaces\Window $oWindow) use ($oCompareDate) {
 
-            $sWindowDay = strtoupper($oWindow->getDay() ?? '') ?: null;
-            $bDayIsOk   = $sWindowDay === null || $sWindowDay === strtoupper($oCompareDate->format('l'));
+            $aDays      = array_map('strtoupper', $oWindow->getDays());
+            $bDayIsOk   = empty($aDays) || in_array(strtoupper($oCompareDate->format('l')), $aDays);
             $bOpenIsOk  = false;
             $bCloseIsOk = false;
 

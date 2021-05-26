@@ -9,8 +9,10 @@
 
 namespace Nails\Deploy\Console\Command\Window;
 
+use Nails\Common\Helper\Strings;
 use Nails\Console\Command\Base;
 use Nails\Deploy\Console\Command\Window;
+use Nails\Environment;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -54,22 +56,32 @@ class ListWindows extends Base
             return static::EXIT_CODE_SUCCESS;
         }
 
-        foreach ($aWindows as $oWindow) {
+        foreach (Environment::available() as $sEnvironment) {
 
-            $aEnvironments = $oWindow->getEnvironments();
+            $aFilteredWindows = Window::filterByEnvironment($aWindows, $sEnvironment);
 
-            $this->keyValueList([
-                'Class'       => get_class($oWindow),
-                'Environment' => $aEnvironments
-                    ? implode(', ', $aEnvironments)
-                    : 'All',
-                'Window'      => sprintf(
-                    '%s at %s, closing %s',
-                    $oWindow->getDay() ?? 'Every day',
-                    $oWindow->getOpen() ?? '00:00:00',
-                    $oWindow->getClose() ?? '23:59:59'
-                ),
-            ]);
+            if (empty($aFilteredWindows)) {
+                continue;
+            }
+
+            $oOutput->writeln('<info>' . $sEnvironment . '</info>');
+            $oOutput->writeln('<info>' . str_repeat('-', strlen($sEnvironment)) . '</info>');
+            foreach ($aFilteredWindows as $oWindow) {
+
+                $aDays = $oWindow->getDays();
+
+                $this->keyValueList([
+                    'Class'  => get_class($oWindow),
+                    'Window' => sprintf(
+                        '%s between %s and %s',
+                        !empty($aDays)
+                            ? Strings::replaceLastOccurrence(', ', ' and ', implode(', ', $aDays))
+                            : 'Every day',
+                        $oWindow->getOpen() ?? '00:00:00',
+                        $oWindow->getClose() ?? '23:59:59'
+                    ),
+                ], false);
+            }
         }
 
         return static::EXIT_CODE_SUCCESS;
