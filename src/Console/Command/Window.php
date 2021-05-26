@@ -12,6 +12,7 @@ namespace Nails\Deploy\Console\Command;
 use Nails\Common\Exception\FactoryException;
 use Nails\Components;
 use Nails\Console\Command\Base;
+use Nails\Console\Exception\ConsoleException;
 use Nails\Deploy\Interfaces;
 use Nails\Environment;
 use Nails\Factory;
@@ -73,8 +74,7 @@ class Window extends Base
         $aWindows = static::filterByDate($aWindows, $oNow);
 
         if (empty($aWindows)) {
-            $oOutput->writeln('Deployment rejected; outside of deploy window');
-            return static::EXIT_CODE_FAILURE;
+            throw new ConsoleException('Deployment rejected; outside of deploy window');
         }
 
         $oOutput->writeln('Deployment accepted; within deploy window');
