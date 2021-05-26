@@ -34,7 +34,7 @@ class Window extends Base
     {
         $this
             ->setName('deploy:window')
-            ->setDescription('Tests if the site is within a deploy window');
+            ->setDescription('Tests if the site is within a deployment window');
     }
 
     // --------------------------------------------------------------------------
@@ -63,7 +63,7 @@ class Window extends Base
          * shouldn't block
          */
         if (empty($aWindows)) {
-            $oOutput->writeln('Deployment accepted; no deploy windows defined for app');
+            $oOutput->writeln('Deployment accepted; no deployment windows defined for app');
             $oOutput->writeln('');
             return static::EXIT_CODE_SUCCESS;
         }
@@ -74,7 +74,7 @@ class Window extends Base
          * If there are no windows defined for the environment, then assume all deployments are acceptable
          */
         if (empty($aWindows)) {
-            $oOutput->writeln('Deployment accepted; no deploy windows defined for ' . Environment::get());
+            $oOutput->writeln('Deployment accepted; no deployment windows defined for ' . Environment::get());
             $oOutput->writeln('');
             return static::EXIT_CODE_SUCCESS;
         }
@@ -88,10 +88,10 @@ class Window extends Base
          * the current time is outside any window, in this case we SHOULD block the deployment
          */
         if (empty($aWindows)) {
-            throw new WindowException('Deployment rejected; outside of deploy window');
+            throw new WindowException('Deployment rejected; outside of deployment window');
         }
 
-        $oOutput->writeln('Deployment accepted; within deploy window');
+        $oOutput->writeln('Deployment accepted; within deployment window');
         $oOutput->writeln('');
         return static::EXIT_CODE_SUCCESS;
     }
