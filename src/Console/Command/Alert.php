@@ -9,11 +9,11 @@
 
 namespace Nails\Deploy\Console\Command;
 
-use Nails\Deploy\Constants;
-use Nails\Deploy\Interfaces;
 use Nails\Common\Exception\FactoryException;
 use Nails\Components;
 use Nails\Console\Command\Base;
+use Nails\Deploy\Constants;
+use Nails\Deploy\Interfaces;
 use Nails\Environment;
 use Nails\Factory;
 use Symfony\Component\Console\Input\InputInterface;

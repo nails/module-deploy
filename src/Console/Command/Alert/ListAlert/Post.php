@@ -9,7 +9,6 @@
 
 namespace Nails\Deploy\Console\Command\Alert\ListAlert;
 
-use Nails\Deploy\Interfaces;
 use Nails\Deploy\Console\Command\Alert\ListAlert;
 
 /**

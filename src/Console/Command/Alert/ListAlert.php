@@ -9,14 +9,10 @@
 
 namespace Nails\Deploy\Console\Command\Alert;
 
-use Nails\Deploy\Console\Command\Alert;
-use Nails\Deploy\Constants;
-use Nails\Deploy\Interfaces;
-use Nails\Common\Exception\FactoryException;
-use Nails\Components;
 use Nails\Console\Command\Base;
+use Nails\Deploy\Console\Command\Alert;
+use Nails\Deploy\Interfaces;
 use Nails\Environment;
-use Nails\Factory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -52,7 +48,6 @@ abstract class ListAlert extends Base
      * @param OutputInterface $oOutput The Output Interface provided by Symfony
      *
      * @return int
-     * @throws FactoryException
      */
     protected function execute(InputInterface $oInput, OutputInterface $oOutput)
     {

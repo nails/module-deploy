@@ -9,8 +9,8 @@
 
 namespace Nails\Deploy\Console\Command\Alert;
 
-use Nails\Deploy\Interfaces;
 use Nails\Deploy\Console\Command\Alert;
+use Nails\Deploy\Interfaces;
 
 /**
  * Class Post

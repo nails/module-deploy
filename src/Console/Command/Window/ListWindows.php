@@ -12,6 +12,7 @@ namespace Nails\Deploy\Console\Command\Window;
 use Nails\Common\Helper\Strings;
 use Nails\Console\Command\Base;
 use Nails\Deploy\Console\Command\Window;
+use Nails\Deploy\Exception\WindowException\InvalidTimeException;
 use Nails\Environment;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,6 +43,7 @@ class ListWindows extends Base
      * @param OutputInterface $oOutput The Output Interface provided by Symfony
      *
      * @return int
+     * @throws InvalidTimeException
      */
     protected function execute(InputInterface $oInput, OutputInterface $oOutput)
     {
