@@ -55,14 +55,16 @@ class Window extends Base
         $aWindows = static::discoverWindows();
 
         if (empty($aWindows)) {
-            $this->oOutput->writeln('Deployment accepted; no deploy windows defined for app');
+            $oOutput->writeln('Deployment accepted; no deploy windows defined for app');
+            $oOutput->writeln('');
             return static::EXIT_CODE_SUCCESS;
         }
 
         $aWindows = static::filterByEnvironment($aWindows, Environment::get());
 
         if (empty($aWindows)) {
-            $this->oOutput->writeln('Deployment accepted; no deploy windows defined for ' . Environment::get());
+            $oOutput->writeln('Deployment accepted; no deploy windows defined for ' . Environment::get());
+            $oOutput->writeln('');
             return static::EXIT_CODE_SUCCESS;
         }
 
@@ -71,11 +73,12 @@ class Window extends Base
         $aWindows = static::filterByDate($aWindows, $oNow);
 
         if (empty($aWindows)) {
-            $this->oOutput->writeln('Deployment rejected; outside of deploy window');
+            $oOutput->writeln('Deployment rejected; outside of deploy window');
             return static::EXIT_CODE_FAILURE;
         }
 
-        $this->oOutput->writeln('Deployment accepted; within deploy window');
+        $oOutput->writeln('Deployment accepted; within deploy window');
+        $oOutput->writeln('');
         return static::EXIT_CODE_SUCCESS;
     }
 
