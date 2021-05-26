@@ -25,7 +25,7 @@ class Pre extends Alert
 
     // --------------------------------------------------------------------------
 
-    protected function filterByChildClass(array $aAlerts): array
+    public static function filterByChildClass(array $aAlerts): array
     {
         return array_filter($aAlerts, function (Interfaces\Alert $oAlert) {
             return $oAlert->isPre();

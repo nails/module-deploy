@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The deploy:alert:pre console command
+ * The deploy:alert:* console command
  *
  * @package  Nails\Deploy\Console\Command
  * @category Console
@@ -62,19 +62,11 @@ abstract class Alert extends Base
 
         $aAlerts = static::discoverAlerts();
         $aAlerts = static::filterByEnvironment($aAlerts, Environment::get());
-        $aAlerts = $this->filterByChildClass($aAlerts);
+        $aAlerts = static::filterByChildClass($aAlerts);
 
-        $aEmails = [];
-        foreach ($aAlerts as $oAlert) {
-            foreach ($oAlert->getEmails() as $sEmail) {
-                $aEmails[] = $sEmail;
-            }
-        }
+        $aEmails = static::extractEmails($aAlerts);
 
-        $aEmails = array_unique($aEmails);
-        $aEmails = array_filter($aEmails);
-
-        if (empty($aAlerts)) {
+        if (empty($aEmails)) {
             $oOutput->writeln('No alerts to be sent');
             $oOutput->writeln('');
             return static::EXIT_CODE_SUCCESS;
@@ -156,10 +148,29 @@ abstract class Alert extends Base
 
     // --------------------------------------------------------------------------
 
+    public static function extractEmails(array $aAlerts): array
+    {
+        $aEmails = [];
+        foreach ($aAlerts as $oAlert) {
+            foreach ($oAlert->getEmails() as $sEmail) {
+                $aEmails[] = $sEmail;
+            }
+        }
+
+        $aEmails = array_unique($aEmails);
+        $aEmails = array_filter($aEmails);
+
+        return $aEmails;
+    }
+
+    // --------------------------------------------------------------------------
+
     /**
+     * Hook for the child class to filter alerts
+     *
      * @param Interfaces\Alert[] $aAlerts Available alerts
      *
      * @return Interfaces\Alert[]
      */
-    abstract protected function filterByChildClass(array $aAlerts): array;
+    abstract public static function filterByChildClass(array $aAlerts): array;
 }
