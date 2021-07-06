@@ -82,7 +82,7 @@ abstract class Alert extends Base
 
         foreach ($aEmails as $sEmail) {
             $oOutput->write(sprintf(
-                'Alerting %s... ',
+                'Alerting <info>%s</info>... ',
                 $sEmail
             ));
 
