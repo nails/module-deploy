@@ -98,7 +98,7 @@ trait Utilities
                 $oOpen = clone $oCompareDate;
                 $sTime = $oWindow->getOpen() ?? '00:00:00';
                 $this->validateTime($sTime);
-                $oOpen->setTimezone($oWindow->getTimezone());
+                $oOpen->setTimezone($oWindow->getTimeZone());
                 $oOpen->setTime(...array_map('intval', explode(':', $sTime)));
 
                 $bOpenIsOk = $oOpen <= $oCompareDate;
@@ -108,7 +108,7 @@ trait Utilities
                     $oClose = clone $oCompareDate;
                     $sTime  = $oWindow->getClose() ?? '23:59:59';
                     $this->validateTime($sTime);
-                    $oClose->setTimezone($oWindow->getTimezone());
+                    $oClose->setTimezone($oWindow->getTimeZone());
                     $oClose->setTime(...array_map('intval', explode(':', $sTime)));
 
                     $bCloseIsOk = $oClose > $oCompareDate;

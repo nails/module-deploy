@@ -50,5 +50,5 @@ interface Window
      *
      * @return \DateTimeZone
      */
-    public function getTimezone(): \DateTimeZone;
+    public function getTimeZone(): \DateTimeZone;
 }
