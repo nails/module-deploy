@@ -42,4 +42,13 @@ interface Window
      * @return string|null
      */
     public function getClose(): ?string;
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns the timezone to use when checking the window
+     *
+     * @return \DateTimeZone
+     */
+    public function getTimezone(): \DateTimeZone;
 }

@@ -98,6 +98,7 @@ trait Utilities
                 $oOpen = clone $oCompareDate;
                 $sTime = $oWindow->getOpen() ?? '00:00:00';
                 $this->validateTime($sTime);
+                $oOpen->setTimezone($oWindow->getTimezone());
                 $oOpen->setTime(...array_map('intval', explode(':', $sTime)));
 
                 $bOpenIsOk = $oOpen <= $oCompareDate;
@@ -107,6 +108,7 @@ trait Utilities
                     $oClose = clone $oCompareDate;
                     $sTime  = $oWindow->getClose() ?? '23:59:59';
                     $this->validateTime($sTime);
+                    $oClose->setTimezone($oWindow->getTimezone());
                     $oClose->setTime(...array_map('intval', explode(':', $sTime)));
 
                     $bCloseIsOk = $oClose > $oCompareDate;
@@ -118,7 +120,6 @@ trait Utilities
     }
 
     // --------------------------------------------------------------------------
-
 
     /**
      * Validates that a time is a valid timestamp
