@@ -27,7 +27,9 @@ trait Utilities
 
         $aOut = [];
         foreach ($oCollection as $sClass) {
-            $aOut[] = new $sClass();
+            /** @var Interfaces\Window $oClass */
+            $oClass = new $sClass();
+            $aOut[] = $oClass;
         }
 
         return $aOut;
@@ -49,7 +51,9 @@ trait Utilities
 
         $aOut = [];
         foreach ($oCollection as $sClass) {
-            $aOut[] = new $sClass();
+            /** @var Interfaces\Alert $oClass */
+            $oClass = new $sClass();
+            $aOut[] = $oClass;
         }
 
         return $aOut;
